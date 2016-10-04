@@ -41,6 +41,9 @@ import shapefile
 from matplotlib import pyplot as plt
 import matplotlib.path as mplPath
 
+dataPath = "../data"
+imgPath = "../images"
+
 a = 6378137.0 # m
 b = 6356752.3 # m
 
@@ -102,7 +105,7 @@ def haversineDistance(phi1,phi2,lambda1,lambda2,r):
 
 def loadNPSData():
 
-    reader = shapefile.Reader("/Users/willettk/Desktop/nps_boundary/nps_boundary.shp")
+    reader = shapefile.Reader("{}/nps_boundary/nps_boundary.shp".format(dataPath))
 
     fields = [field[0] for field in reader.fields[1:]]
 
@@ -114,7 +117,7 @@ def loadNPSData():
                     'NPSA')
 
     npcount = 0
-    for sr in reader.iterShapeRecords():
+    for sr in reader.shapeRecords():
         attr = dict(zip(fields, sr.record))
         if attr['UNIT_TYPE'] == "National Park" and attr['UNIT_CODE'] not in excludeCodes:
             d = dict()
@@ -132,7 +135,7 @@ def loadNPSData():
 
 def loadUSPolygon():
 
-    reader = shapefile.Reader("/Users/willettk/Desktop/cb_2015_us_nation_20m/cb_2015_us_nation_20m.shp")
+    reader = shapefile.Reader("{}/cb_2015_us_nation_20m/cb_2015_us_nation_20m.shp".format(dataPath))
     s = reader.shape()
 
     # Find the primary polygon that defines the outline of the contiguous US
@@ -155,11 +158,11 @@ def loadUSPolygon():
 
 def loadStates():
 
-    reader = shapefile.Reader("/Users/willettk/Desktop/cb_2015_us_state_20m/cb_2015_us_state_20m.shp")
+    reader = shapefile.Reader("{}/cb_2015_us_state_20m/cb_2015_us_state_20m.shp".format(dataPath))
 
     statePoints = []
 
-    for sr in reader.iterShapeRecords():
+    for sr in reader.shapeRecords():
         if sr.record[4] not in ('DC','PR','AK','HI'):
             if len(sr.shape.parts) > 1:
                 s1 = sr.shape.parts[:-1]
@@ -358,5 +361,5 @@ if __name__ == "__main__":
 
     fig.tight_layout()
 
-    plt.show()
+    plt.savefig("{}/map.png".format(imgPath))
 
