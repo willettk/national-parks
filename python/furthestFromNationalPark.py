@@ -105,6 +105,12 @@ def haversineDistance(phi1,phi2,lambda1,lambda2,r):
 
 def loadNPSData():
 
+    '''
+    Boundary data for NPS sites is from
+
+        https://irma.nps.gov/DataStore/Reference/Profile/2224545?lnv=True
+    '''
+
     reader = shapefile.Reader("{}/nps_boundary/nps_boundary.shp".format(dataPath))
 
     fields = [field[0] for field in reader.fields[1:]]
@@ -135,6 +141,13 @@ def loadNPSData():
 
 def loadUSPolygon():
 
+    '''
+    Boundary files are from US Census 2015
+
+        https://www.census.gov/geo/maps-data/data/cbf/cbf_nation.html
+
+    '''
+
     reader = shapefile.Reader("{}/cb_2015_us_nation_20m/cb_2015_us_nation_20m.shp".format(dataPath))
     s = reader.shape()
 
@@ -158,6 +171,12 @@ def loadUSPolygon():
 
 def loadStates():
 
+    '''
+    Boundary files are from US Census 2015
+
+        https://www.census.gov/geo/maps-data/data/cbf/cbf_state.html
+
+    '''
     reader = shapefile.Reader("{}/cb_2015_us_state_20m/cb_2015_us_state_20m.shp".format(dataPath))
 
     statePoints = []
